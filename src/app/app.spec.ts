@@ -1,4 +1,4 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+﻿import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
@@ -16,10 +16,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render navbar brand title', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, organitzadorpartits_test');
+    expect(compiled.querySelector('.navbar-brand')?.textContent).toContain('Organitzador de partits');
   });
 });
