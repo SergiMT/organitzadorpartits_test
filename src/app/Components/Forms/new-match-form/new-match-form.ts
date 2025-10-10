@@ -11,7 +11,7 @@ import { EquipsService } from '../../../Core/Services/equips.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './new-match-form.html',
-  styleUrl: './new-match-form.scss'
+  styleUrl: './new-match-form.scss',
 })
 export class NewMatchForm {
   private readonly formBuilder = inject(FormBuilder);
@@ -32,7 +32,7 @@ export class NewMatchForm {
         local: value.local,
         visitant: value.visitant,
         resultat: value.resultat ?? '',
-        observacions: value.observacions ?? ''
+        observacions: value.observacions ?? '',
       });
       return;
     }
@@ -49,12 +49,12 @@ export class NewMatchForm {
     local: ['', Validators.required],
     visitant: ['', Validators.required],
     resultat: [''],
-    observacions: ['']
+    observacions: [''],
   });
 
   readonly equips = toSignal(this.equipsService.getEquips(), { initialValue: [] as Equip[] });
   readonly equipsOrdenats = computed(() =>
-    [...this.equips()].sort((a, b) => a.nom.localeCompare(b.nom))
+    [...this.equips()].sort((a, b) => a.nom.localeCompare(b.nom)),
   );
 
   onSubmit(): void {
@@ -71,7 +71,7 @@ export class NewMatchForm {
       local,
       visitant,
       resultat: resultat.trim() ? resultat.trim() : undefined,
-      observacions: observacions.trim() ? observacions.trim() : undefined
+      observacions: observacions.trim() ? observacions.trim() : undefined,
     };
 
     this.desa.emit(partit);
@@ -88,7 +88,7 @@ export class NewMatchForm {
       local: '',
       visitant: '',
       resultat: '',
-      observacions: ''
+      observacions: '',
     });
   }
 }

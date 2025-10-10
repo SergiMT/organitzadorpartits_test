@@ -15,7 +15,7 @@ interface PartitOrdenat {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NewMatchForm],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss'
+  styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent {
   private readonly formBuilder = inject(FormBuilder);
@@ -32,7 +32,7 @@ export class HomePageComponent {
 
   readonly nouCapDeSetmanaForm = this.formBuilder.nonNullable.group({
     dataInici: ['', Validators.required],
-    dataFi: ['', Validators.required]
+    dataFi: ['', Validators.required],
   });
 
   readonly hiHaCapsDeSetmana = computed(() => this.capsDeSetmana().length > 0);
@@ -215,4 +215,3 @@ export class HomePageComponent {
     return horaA.localeCompare(horaB);
   }
 }
-

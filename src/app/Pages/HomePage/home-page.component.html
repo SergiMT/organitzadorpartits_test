@@ -1,7 +1,9 @@
 <section class="home-page container">
   <div class="card shadow-sm">
     <div class="card-body">
-      <div class="d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center mb-4">
+      <div
+        class="d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center mb-4"
+      >
         <h2 class="card-title h4 mb-0">
           <i class="bi bi-calendar3 me-2" aria-hidden="true"></i>
           Caps de setmana
@@ -18,7 +20,11 @@
       </div>
 
       @if (mostraFormulariNou()) {
-        <form [formGroup]="nouCapDeSetmanaForm" (ngSubmit)="creaCapDeSetmana()" class="row g-3 mb-4">
+        <form
+          [formGroup]="nouCapDeSetmanaForm"
+          (ngSubmit)="creaCapDeSetmana()"
+          class="row g-3 mb-4"
+        >
           <div class="col-12 col-md-4">
             <label for="dataInici" class="form-label">
               <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
@@ -68,12 +74,18 @@
 
       @if (hiHaCapsDeSetmana()) {
         <ul class="list-group">
-          @for (cap of capsDeSetmana(); track cap.dataInici + '-' + cap.dataFi; let index = $index) {
-            <li class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+          @for (
+            cap of capsDeSetmana();
+            track cap.dataInici + '-' + cap.dataFi;
+            let index = $index
+          ) {
+            <li
+              class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3"
+            >
               <div>
                 <div class="fw-semibold">
                   <i class="bi bi-calendar-week me-2 text-primary" aria-hidden="true"></i>
-                  {{ cap.dataInici | date:'dd/MM/yyyy' }} - {{ cap.dataFi | date:'dd/MM/yyyy' }}
+                  {{ cap.dataInici | date: 'dd/MM/yyyy' }} - {{ cap.dataFi | date: 'dd/MM/yyyy' }}
                 </div>
                 <div class="text-body-secondary small">
                   <i class="bi bi-people me-1" aria-hidden="true"></i>
@@ -82,15 +94,27 @@
               </div>
 
               <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn btn-outline-primary btn-sm" (click)="obreModalPartit(index)">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  (click)="obreModalPartit(index)"
+                >
                   <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
                   Afegir partit
                 </button>
-                <button type="button" class="btn btn-outline-info btn-sm" (click)="obreModalLlistaPartits(index)">
+                <button
+                  type="button"
+                  class="btn btn-outline-info btn-sm"
+                  (click)="obreModalLlistaPartits(index)"
+                >
                   <i class="bi bi-list-ul me-2" aria-hidden="true"></i>
                   Veure partits
                 </button>
-                <button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminaCapDeSetmana(index)">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="eliminaCapDeSetmana(index)"
+                >
                   <i class="bi bi-trash3 me-2" aria-hidden="true"></i>
                   Eliminar cap de setmana
                 </button>
@@ -112,10 +136,19 @@
       <div class="modal-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3 class="modal-title h5 mb-0">
-            <i class="bi" [ngClass]="estaEditantPartit() ? 'bi-pencil-square me-2' : 'bi-plus-circle me-2'" aria-hidden="true"></i>
+            <i
+              class="bi"
+              [ngClass]="estaEditantPartit() ? 'bi-pencil-square me-2' : 'bi-plus-circle me-2'"
+              aria-hidden="true"
+            ></i>
             {{ estaEditantPartit() ? 'Editar partit' : 'Nou partit' }}
           </h3>
-          <button type="button" class="btn-close" aria-label="Tancar" (click)="tancaModalPartit()"></button>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Tancar"
+            (click)="tancaModalPartit()"
+          ></button>
         </div>
 
         <app-new-match-form
@@ -131,19 +164,30 @@
 
   @if (mostraModalLlista()) {
     <div class="modal-overlay">
-      <div class="modal-card modal-card--wide" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div
+        class="modal-card modal-card--wide"
+        role="dialog"
+        aria-modal="true"
+        (click)="$event.stopPropagation()"
+      >
         <div class="modal-header">
           <h3 class="modal-title h5 mb-0">
             <i class="bi bi-list-check me-2" aria-hidden="true"></i>
             Partits del cap de setmana
           </h3>
-          <button type="button" class="btn-close" aria-label="Tancar" (click)="tancaModalLlista()"></button>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Tancar"
+            (click)="tancaModalLlista()"
+          ></button>
         </div>
 
         @if (capPerLlista()) {
           <div class="modal-subtitle text-body-secondary mb-3">
             <i class="bi bi-calendar-week me-2" aria-hidden="true"></i>
-            {{ capPerLlista()?.dataInici | date:'dd/MM/yyyy' }} - {{ capPerLlista()?.dataFi | date:'dd/MM/yyyy' }}
+            {{ capPerLlista()?.dataInici | date: 'dd/MM/yyyy' }} -
+            {{ capPerLlista()?.dataFi | date: 'dd/MM/yyyy' }}
           </div>
 
           @if (partitsCapPerLlista().length) {
@@ -151,18 +195,33 @@
               <table class="table table-dark table-striped table-hover table-sm align-middle mb-0">
                 <thead>
                   <tr>
-                    <th scope="col"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Dia</th>
-                    <th scope="col"><i class="bi bi-clock-history me-1" aria-hidden="true"></i>Hora</th>
-                    <th scope="col"><i class="bi bi-shield-fill-check me-1" aria-hidden="true"></i>Local</th>
-                    <th scope="col"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>Visitant</th>
-                    <th scope="col"><i class="bi bi-trophy-fill me-1" aria-hidden="true"></i>Resultat</th>
-                    <th scope="col"><i class="bi bi-card-text me-1" aria-hidden="true"></i>Observacions</th>
+                    <th scope="col">
+                      <i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Dia
+                    </th>
+                    <th scope="col">
+                      <i class="bi bi-clock-history me-1" aria-hidden="true"></i>Hora
+                    </th>
+                    <th scope="col">
+                      <i class="bi bi-shield-fill-check me-1" aria-hidden="true"></i>Local
+                    </th>
+                    <th scope="col">
+                      <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>Visitant
+                    </th>
+                    <th scope="col">
+                      <i class="bi bi-trophy-fill me-1" aria-hidden="true"></i>Resultat
+                    </th>
+                    <th scope="col">
+                      <i class="bi bi-card-text me-1" aria-hidden="true"></i>Observacions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  @for (partit of partitsCapPerLlista(); track partit.partit.dia + '-' + partit.partit.hora + '-' + partit.index) {
+                  @for (
+                    partit of partitsCapPerLlista();
+                    track partit.partit.dia + '-' + partit.partit.hora + '-' + partit.index
+                  ) {
                     <tr>
-                      <td>{{ partit.partit.dia | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ partit.partit.dia | date: 'dd/MM/yyyy' }}</td>
                       <td>{{ partit.partit.hora }}</td>
                       <td>{{ partit.partit.local }}</td>
                       <td>{{ partit.partit.visitant }}</td>
@@ -186,7 +245,9 @@
             </p>
           }
         } @else {
-          <p class="text-body-secondary mb-0">No s'ha pogut carregar el cap de setmana seleccionat.</p>
+          <p class="text-body-secondary mb-0">
+            No s'ha pogut carregar el cap de setmana seleccionat.
+          </p>
         }
       </div>
     </div>

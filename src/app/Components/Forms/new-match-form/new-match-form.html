@@ -1,6 +1,7 @@
 @if (capSeleccionat) {
   <p class="modal-subtitle text-body-secondary mb-3">
-    Cap de setmana: {{ capSeleccionat!.dataInici | date:'dd/MM/yyyy' }} - {{ capSeleccionat!.dataFi | date:'dd/MM/yyyy' }}
+    Cap de setmana: {{ capSeleccionat!.dataInici | date: 'dd/MM/yyyy' }} -
+    {{ capSeleccionat!.dataFi | date: 'dd/MM/yyyy' }}
   </p>
 }
 
@@ -110,7 +111,11 @@
       Cancelar
     </button>
     <button type="submit" class="btn btn-success">
-      <i class="bi" [ngClass]="estaEditant ? 'bi-arrow-repeat' : 'bi-check-circle'" aria-hidden="true"></i>
+      <i
+        class="bi"
+        [ngClass]="estaEditant ? 'bi-arrow-repeat' : 'bi-check-circle'"
+        aria-hidden="true"
+      ></i>
       <span class="ms-2">{{ estaEditant ? 'Actualitzar partit' : 'Desar partit' }}</span>
     </button>
   </div>
