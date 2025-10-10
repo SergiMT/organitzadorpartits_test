@@ -1,10 +1,104 @@
-﻿.home-page {
+.home-page {
   padding-block: 2rem;
   display: flex;
   justify-content: center;
 }
 
 .card {
-  max-width: 32rem;
+  max-width: 56rem;
   width: 100%;
+}
+
+.list-group-item {
+  border-color: #e7e7e7;
+}
+
+.btn-outline-primary.btn-sm {
+  white-space: nowrap;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  z-index: 1050;
+}
+
+.modal-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.27);
+  max-width: 40rem;
+  width: 100%;
+  padding: 1.5rem;
+  position: relative;
+  animation: modal-fade-in 150ms ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-subtitle {
+  font-size: 0.875rem;
+}
+
+.btn-close {
+  border: none;
+  background: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  opacity: 0.6;
+  position: relative;
+  cursor: pointer;
+  color: inherit;
+}
+
+.btn-close::before,
+.btn-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.25rem;
+  height: 2px;
+  background-color: currentColor;
+  transform-origin: center;
+}
+
+.btn-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.btn-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

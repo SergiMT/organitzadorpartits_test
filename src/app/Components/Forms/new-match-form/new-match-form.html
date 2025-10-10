@@ -1,0 +1,116 @@
+@if (capSeleccionat) {
+  <p class="modal-subtitle text-body-secondary mb-3">
+    Cap de setmana: {{ capSeleccionat!.dataInici | date: 'dd/MM/yyyy' }} -
+    {{ capSeleccionat!.dataFi | date: 'dd/MM/yyyy' }}
+  </p>
+}
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+  <div class="col-12 col-md-6">
+    <label for="dia" class="form-label">Dia</label>
+    <input
+      id="dia"
+      type="date"
+      class="form-control"
+      formControlName="dia"
+      [class.is-invalid]="form.controls.dia.invalid && form.controls.dia.touched"
+    />
+    @if (form.controls.dia.invalid && form.controls.dia.touched) {
+      <div class="invalid-feedback d-block">Cal indicar el dia.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label for="hora" class="form-label">Hora</label>
+    <input
+      id="hora"
+      type="time"
+      class="form-control"
+      formControlName="hora"
+      [class.is-invalid]="form.controls.hora.invalid && form.controls.hora.touched"
+    />
+    @if (form.controls.hora.invalid && form.controls.hora.touched) {
+      <div class="invalid-feedback d-block">Cal indicar l'hora.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label for="local" class="form-label">Local</label>
+    <input
+      id="filtreLocal"
+      type="search"
+      class="form-control mb-2"
+      placeholder="Cerca equip..."
+      autocomplete="off"
+      [value]="filtreLocal()"
+      (input)="actualitzaFiltreLocal($event.target.value)"
+      aria-label="Cerca equip local"
+    />
+    <select
+      id="local"
+      class="form-select"
+      formControlName="local"
+      [disabled]="!equips().length"
+      [class.is-invalid]="form.controls.local.invalid && form.controls.local.touched"
+    >
+      <option value="" disabled>Selecciona equip</option>
+      @for (equip of equipsLocal(); track equip.nom) {
+        <option [value]="equip.nom">{{ equip.nom }}</option>
+      }
+    </select>
+    @if (form.controls.local.invalid && form.controls.local.touched) {
+      <div class="invalid-feedback d-block">Cal indicar l'equip local.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label for="visitant" class="form-label">Visitant</label>
+    <input
+      id="filtreVisitant"
+      type="search"
+      class="form-control mb-2"
+      placeholder="Cerca equip..."
+      autocomplete="off"
+      [value]="filtreVisitant()"
+      (input)="actualitzaFiltreVisitant($event.target.value)"
+      aria-label="Cerca equip visitant"
+    />
+    <select
+      id="visitant"
+      class="form-select"
+      formControlName="visitant"
+      [disabled]="!equips().length"
+      [class.is-invalid]="form.controls.visitant.invalid && form.controls.visitant.touched"
+    >
+      <option value="" disabled>Selecciona equip</option>
+      @for (equip of equipsVisitant(); track equip.nom) {
+        <option [value]="equip.nom">{{ equip.nom }}</option>
+      }
+    </select>
+    @if (form.controls.visitant.invalid && form.controls.visitant.touched) {
+      <div class="invalid-feedback d-block">Cal indicar l'equip visitant.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label for="resultat" class="form-label">Resultat (opcional)</label>
+    <input id="resultat" type="text" class="form-control" formControlName="resultat" />
+  </div>
+
+  <div class="col-12">
+    <label for="observacions" class="form-label">Observacions</label>
+    <textarea
+      id="observacions"
+      rows="3"
+      class="form-control"
+      formControlName="observacions"
+    ></textarea>
+  </div>
+
+  <div class="col-12 d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
+    <button type="submit" class="btn btn-success">
+      {{ estaEditant ? 'Actualitzar partit' : 'Desar partit' }}
+    </button>
+  </div>
+</form>

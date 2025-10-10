@@ -1,8 +1,118 @@
-﻿<section class="home-page container">
+<section class="home-page container">
   <div class="card shadow-sm">
     <div class="card-body">
-      <h2 class="card-title h4 mb-3">Benvingut/da!</h2>
-      <p class="card-text mb-0">Pantalla inicial pendent de desenvolupament.</p>
+      <div
+        class="d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center mb-4"
+      >
+        <h2 class="card-title h4 mb-0">Caps de setmana</h2>
+        <button
+          type="button"
+          class="btn btn-primary align-self-md-start"
+          (click)="obreFormulari()"
+          [disabled]="mostraFormulariNou()"
+        >
+          Nou cap de setmana
+        </button>
+      </div>
+
+      @if (mostraFormulariNou()) {
+        <form
+          [formGroup]="nouCapDeSetmanaForm"
+          (ngSubmit)="creaCapDeSetmana()"
+          class="row g-3 mb-4"
+        >
+          <div class="col-12 col-md-4">
+            <label for="dataInici" class="form-label">Data d'inici</label>
+            <input
+              id="dataInici"
+              type="date"
+              class="form-control"
+              formControlName="dataInici"
+              [class.is-invalid]="controlDataInici.invalid && controlDataInici.touched"
+            />
+            @if (controlDataInici.invalid && controlDataInici.touched) {
+              <div class="invalid-feedback d-block">Cal indicar la data d'inici.</div>
+            }
+          </div>
+
+          <div class="col-12 col-md-4">
+            <label for="dataFi" class="form-label">Data de fi</label>
+            <input
+              id="dataFi"
+              type="date"
+              class="form-control"
+              formControlName="dataFi"
+              [class.is-invalid]="controlDataFi.invalid && controlDataFi.touched"
+            />
+            @if (controlDataFi.invalid && controlDataFi.touched) {
+              <div class="invalid-feedback d-block">Cal indicar la data de fi.</div>
+            }
+          </div>
+
+          <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-success">Desar</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelaCreacio()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      }
+
+      @if (hiHaCapsDeSetmana()) {
+        <ul class="list-group">
+          @for (
+            cap of capsDeSetmana();
+            track cap.dataInici + '-' + cap.dataFi;
+            let index = $index
+          ) {
+            <li
+              class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+            >
+              <div>
+                <div class="fw-semibold">
+                  {{ cap.dataInici | date: 'dd/MM/yyyy' }} - {{ cap.dataFi | date: 'dd/MM/yyyy' }}
+                </div>
+                <div class="text-body-secondary small">{{ cap.partits.length }} partits</div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="obreModalPartit(index)"
+              >
+                Afegir partit
+              </button>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="mb-0 text-body-secondary">Encara no hi ha cap de setmana creat.</p>
+      }
     </div>
   </div>
+
+  @if (mostraModalPartit()) {
+    <div class="modal-overlay">
+      <div class="modal-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3 class="modal-title h5 mb-0">
+            {{ estaEditantPartit() ? 'Editar partit' : 'Nou partit' }}
+          </h3>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Tancar"
+            (click)="tancaModalPartit()"
+          ></button>
+        </div>
+
+        <app-new-match-form
+          [capSeleccionat]="capSeleccionat()"
+          [estaEditant]="estaEditantPartit()"
+          [partitEnEdicio]="partitEnEdicio()"
+          (desa)="desaPartit($event)"
+          (cancel)="tancaModalPartit()"
+        ></app-new-match-form>
+      </div>
+    </div>
+  }
 </section>
