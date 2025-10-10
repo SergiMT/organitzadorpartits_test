@@ -102,3 +102,12 @@
     transform: translateY(0);
   }
 }
+
+.modal-card--wide {
+  max-width: 64rem;
+}
+
+.matches-table {
+  max-height: 50vh;
+  overflow-y: auto;
+}

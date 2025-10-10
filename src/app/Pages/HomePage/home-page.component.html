@@ -1,28 +1,29 @@
 <section class="home-page container">
   <div class="card shadow-sm">
     <div class="card-body">
-      <div
-        class="d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center mb-4"
-      >
-        <h2 class="card-title h4 mb-0">Caps de setmana</h2>
+      <div class="d-flex flex-column flex-md-row gap-3 gap-md-0 justify-content-between align-items-md-center mb-4">
+        <h2 class="card-title h4 mb-0">
+          <i class="bi bi-calendar3 me-2" aria-hidden="true"></i>
+          Caps de setmana
+        </h2>
         <button
           type="button"
           class="btn btn-primary align-self-md-start"
           (click)="obreFormulari()"
           [disabled]="mostraFormulariNou()"
         >
+          <i class="bi bi-calendar-plus me-2" aria-hidden="true"></i>
           Nou cap de setmana
         </button>
       </div>
 
       @if (mostraFormulariNou()) {
-        <form
-          [formGroup]="nouCapDeSetmanaForm"
-          (ngSubmit)="creaCapDeSetmana()"
-          class="row g-3 mb-4"
-        >
+        <form [formGroup]="nouCapDeSetmanaForm" (ngSubmit)="creaCapDeSetmana()" class="row g-3 mb-4">
           <div class="col-12 col-md-4">
-            <label for="dataInici" class="form-label">Data d'inici</label>
+            <label for="dataInici" class="form-label">
+              <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
+              Data d'inici
+            </label>
             <input
               id="dataInici"
               type="date"
@@ -36,7 +37,10 @@
           </div>
 
           <div class="col-12 col-md-4">
-            <label for="dataFi" class="form-label">Data de fi</label>
+            <label for="dataFi" class="form-label">
+              <i class="bi bi-calendar-check me-2" aria-hidden="true"></i>
+              Data de fi
+            </label>
             <input
               id="dataFi"
               type="date"
@@ -50,8 +54,12 @@
           </div>
 
           <div class="col-12 d-flex gap-2">
-            <button type="submit" class="btn btn-success">Desar</button>
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-floppy me-2" aria-hidden="true"></i>
+              Desar
+            </button>
             <button type="button" class="btn btn-outline-secondary" (click)="cancelaCreacio()">
+              <i class="bi bi-x-circle me-2" aria-hidden="true"></i>
               Cancelar
             </button>
           </div>
@@ -60,32 +68,41 @@
 
       @if (hiHaCapsDeSetmana()) {
         <ul class="list-group">
-          @for (
-            cap of capsDeSetmana();
-            track cap.dataInici + '-' + cap.dataFi;
-            let index = $index
-          ) {
-            <li
-              class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
-            >
+          @for (cap of capsDeSetmana(); track cap.dataInici + '-' + cap.dataFi; let index = $index) {
+            <li class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
               <div>
                 <div class="fw-semibold">
-                  {{ cap.dataInici | date: 'dd/MM/yyyy' }} - {{ cap.dataFi | date: 'dd/MM/yyyy' }}
+                  <i class="bi bi-calendar-week me-2 text-primary" aria-hidden="true"></i>
+                  {{ cap.dataInici | date:'dd/MM/yyyy' }} - {{ cap.dataFi | date:'dd/MM/yyyy' }}
                 </div>
-                <div class="text-body-secondary small">{{ cap.partits.length }} partits</div>
+                <div class="text-body-secondary small">
+                  <i class="bi bi-people me-1" aria-hidden="true"></i>
+                  {{ cap.partits.length }} partits
+                </div>
               </div>
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                (click)="obreModalPartit(index)"
-              >
-                Afegir partit
-              </button>
+
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="obreModalPartit(index)">
+                  <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+                  Afegir partit
+                </button>
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="obreModalLlistaPartits(index)">
+                  <i class="bi bi-list-ul me-2" aria-hidden="true"></i>
+                  Veure partits
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminaCapDeSetmana(index)">
+                  <i class="bi bi-trash3 me-2" aria-hidden="true"></i>
+                  Eliminar cap de setmana
+                </button>
+              </div>
             </li>
           }
         </ul>
       } @else {
-        <p class="mb-0 text-body-secondary">Encara no hi ha cap de setmana creat.</p>
+        <p class="mb-0 text-body-secondary">
+          <i class="bi bi-emoji-neutral me-2" aria-hidden="true"></i>
+          Encara no hi ha cap de setmana creat.
+        </p>
       }
     </div>
   </div>
@@ -95,14 +112,10 @@
       <div class="modal-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3 class="modal-title h5 mb-0">
+            <i class="bi" [ngClass]="estaEditantPartit() ? 'bi-pencil-square me-2' : 'bi-plus-circle me-2'" aria-hidden="true"></i>
             {{ estaEditantPartit() ? 'Editar partit' : 'Nou partit' }}
           </h3>
-          <button
-            type="button"
-            class="btn-close"
-            aria-label="Tancar"
-            (click)="tancaModalPartit()"
-          ></button>
+          <button type="button" class="btn-close" aria-label="Tancar" (click)="tancaModalPartit()"></button>
         </div>
 
         <app-new-match-form
@@ -112,6 +125,69 @@
           (desa)="desaPartit($event)"
           (cancel)="tancaModalPartit()"
         ></app-new-match-form>
+      </div>
+    </div>
+  }
+
+  @if (mostraModalLlista()) {
+    <div class="modal-overlay">
+      <div class="modal-card modal-card--wide" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3 class="modal-title h5 mb-0">
+            <i class="bi bi-list-check me-2" aria-hidden="true"></i>
+            Partits del cap de setmana
+          </h3>
+          <button type="button" class="btn-close" aria-label="Tancar" (click)="tancaModalLlista()"></button>
+        </div>
+
+        @if (capPerLlista()) {
+          <div class="modal-subtitle text-body-secondary mb-3">
+            <i class="bi bi-calendar-week me-2" aria-hidden="true"></i>
+            {{ capPerLlista()?.dataInici | date:'dd/MM/yyyy' }} - {{ capPerLlista()?.dataFi | date:'dd/MM/yyyy' }}
+          </div>
+
+          @if (partitsCapPerLlista().length) {
+            <div class="table-responsive matches-table">
+              <table class="table table-dark table-striped table-hover table-sm align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Dia</th>
+                    <th scope="col"><i class="bi bi-clock-history me-1" aria-hidden="true"></i>Hora</th>
+                    <th scope="col"><i class="bi bi-shield-fill-check me-1" aria-hidden="true"></i>Local</th>
+                    <th scope="col"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>Visitant</th>
+                    <th scope="col"><i class="bi bi-trophy-fill me-1" aria-hidden="true"></i>Resultat</th>
+                    <th scope="col"><i class="bi bi-card-text me-1" aria-hidden="true"></i>Observacions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (partit of partitsCapPerLlista(); track partit.partit.dia + '-' + partit.partit.hora + '-' + partit.index) {
+                    <tr>
+                      <td>{{ partit.partit.dia | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ partit.partit.hora }}</td>
+                      <td>{{ partit.partit.local }}</td>
+                      <td>{{ partit.partit.visitant }}</td>
+                      <td>{{ partit.partit.resultat ?? '-' }}</td>
+                      <td>
+                        @if (partit.partit.observacions) {
+                          {{ partit.partit.observacions }}
+                        } @else {
+                          <span class="text-body-secondary">Sense observacions</span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="text-body-secondary mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle" aria-hidden="true"></i>
+              Encara no hi ha cap partit registrat per aquest cap de setmana.
+            </p>
+          }
+        } @else {
+          <p class="text-body-secondary mb-0">No s'ha pogut carregar el cap de setmana seleccionat.</p>
+        }
       </div>
     </div>
   }

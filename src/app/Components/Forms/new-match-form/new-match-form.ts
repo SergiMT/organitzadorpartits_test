@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -11,7 +11,7 @@ import { EquipsService } from '../../../Core/Services/equips.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './new-match-form.html',
-  styleUrl: './new-match-form.scss',
+  styleUrl: './new-match-form.scss'
 })
 export class NewMatchForm {
   private readonly formBuilder = inject(FormBuilder);
@@ -32,11 +32,8 @@ export class NewMatchForm {
         local: value.local,
         visitant: value.visitant,
         resultat: value.resultat ?? '',
-        observacions: value.observacions ?? '',
+        observacions: value.observacions ?? ''
       });
-
-      this.actualitzaFiltreLocal(value.local);
-      this.actualitzaFiltreVisitant(value.visitant);
       return;
     }
 
@@ -52,15 +49,13 @@ export class NewMatchForm {
     local: ['', Validators.required],
     visitant: ['', Validators.required],
     resultat: [''],
-    observacions: [''],
+    observacions: ['']
   });
 
   readonly equips = toSignal(this.equipsService.getEquips(), { initialValue: [] as Equip[] });
-  readonly filtreLocal = signal('');
-  readonly filtreVisitant = signal('');
-
-  readonly equipsLocal = computed(() => this.filtraEquips(this.filtreLocal()));
-  readonly equipsVisitant = computed(() => this.filtraEquips(this.filtreVisitant()));
+  readonly equipsOrdenats = computed(() =>
+    [...this.equips()].sort((a, b) => a.nom.localeCompare(b.nom))
+  );
 
   onSubmit(): void {
     if (this.form.invalid) {
@@ -76,7 +71,7 @@ export class NewMatchForm {
       local,
       visitant,
       resultat: resultat.trim() ? resultat.trim() : undefined,
-      observacions: observacions.trim() ? observacions.trim() : undefined,
+      observacions: observacions.trim() ? observacions.trim() : undefined
     };
 
     this.desa.emit(partit);
@@ -86,25 +81,6 @@ export class NewMatchForm {
     this.cancel.emit();
   }
 
-  actualitzaFiltreLocal(valor: string): void {
-    this.filtreLocal.set(valor ?? '');
-  }
-
-  actualitzaFiltreVisitant(valor: string): void {
-    this.filtreVisitant.set(valor ?? '');
-  }
-
-  private filtraEquips(filtre: string): Equip[] {
-    const criteri = filtre.trim().toLowerCase();
-    const equips = this.equips();
-
-    if (!criteri) {
-      return equips;
-    }
-
-    return equips.filter((equip) => equip.nom.toLowerCase().includes(criteri));
-  }
-
   private resetForm(): void {
     this.form.reset({
       dia: '',
@@ -112,14 +88,7 @@ export class NewMatchForm {
       local: '',
       visitant: '',
       resultat: '',
-      observacions: '',
+      observacions: ''
     });
-
-    this.reiniciaFiltresEquips();
-  }
-
-  private reiniciaFiltresEquips(): void {
-    this.filtreLocal.set('');
-    this.filtreVisitant.set('');
   }
 }

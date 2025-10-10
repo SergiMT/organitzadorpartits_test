@@ -15,7 +15,7 @@ interface PartitOrdenat {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NewMatchForm],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss',
+  styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent {
   private readonly formBuilder = inject(FormBuilder);
@@ -23,38 +23,27 @@ export class HomePageComponent {
   readonly capsDeSetmana = signal<CapDeSetmana[]>([]);
   readonly mostraFormulariNou = signal(false);
   readonly mostraModalPartit = signal(false);
+  readonly mostraModalLlista = signal(false);
   readonly indexCapSeleccionat = signal<number | null>(null);
   readonly estaEditantPartit = signal(false);
   readonly indexPartitEnEdicio = signal<number | null>(null);
   readonly partitEnEdicio = signal<Match | null>(null);
+  readonly indexCapPerLlista = signal<number | null>(null);
 
   readonly nouCapDeSetmanaForm = this.formBuilder.nonNullable.group({
     dataInici: ['', Validators.required],
-    dataFi: ['', Validators.required],
+    dataFi: ['', Validators.required]
   });
 
   readonly hiHaCapsDeSetmana = computed(() => this.capsDeSetmana().length > 0);
 
-  readonly capSeleccionat = computed(() => {
-    const index = this.indexCapSeleccionat();
-    if (index === null) {
-      return null;
-    }
+  readonly capSeleccionat = computed(() => this.#obteCapPerIndex(this.indexCapSeleccionat()));
 
-    const caps = this.capsDeSetmana();
-    return caps[index] ?? null;
-  });
+  readonly capPerLlista = computed(() => this.#obteCapPerIndex(this.indexCapPerLlista()));
 
-  readonly partitsCapSeleccionat = computed<PartitOrdenat[]>(() => {
-    const cap = this.capSeleccionat();
-    if (!cap) {
-      return [];
-    }
+  readonly partitsCapSeleccionat = computed(() => this.#partitsOrdenats(this.capSeleccionat()));
 
-    return cap.partits
-      .map((partit, index) => ({ partit, index }))
-      .sort((a, b) => this.comparaPartits(a.partit, b.partit));
-  });
+  readonly partitsCapPerLlista = computed(() => this.#partitsOrdenats(this.capPerLlista()));
 
   obreFormulari(): void {
     this.mostraFormulariNou.set(true);
@@ -116,6 +105,11 @@ export class HomePageComponent {
     this.mostraModalPartit.set(true);
   }
 
+  obreModalLlistaPartits(indexCap: number): void {
+    this.indexCapPerLlista.set(indexCap);
+    this.mostraModalLlista.set(true);
+  }
+
   eliminaPartit(indexCap: number, indexPartit: number): void {
     this.capsDeSetmana.update((capsActuals) => {
       const actualitzats = capsActuals.map((cap, idx) => {
@@ -130,11 +124,36 @@ export class HomePageComponent {
     });
   }
 
+  eliminaCapDeSetmana(indexCap: number): void {
+    this.capsDeSetmana.update((capsActuals) => capsActuals.filter((_, idx) => idx !== indexCap));
+
+    if (this.indexCapSeleccionat() === indexCap) {
+      this.tancaModalPartit();
+    }
+
+    if (this.indexCapPerLlista() === indexCap) {
+      this.tancaModalLlista();
+    }
+
+    if ((this.indexCapSeleccionat() ?? -1) > indexCap) {
+      this.indexCapSeleccionat.update((valor) => (valor !== null ? valor - 1 : valor));
+    }
+
+    if ((this.indexCapPerLlista() ?? -1) > indexCap) {
+      this.indexCapPerLlista.update((valor) => (valor !== null ? valor - 1 : valor));
+    }
+  }
+
   tancaModalPartit(): void {
     this.mostraModalPartit.set(false);
     this.indexPartitEnEdicio.set(null);
     this.estaEditantPartit.set(false);
     this.partitEnEdicio.set(null);
+  }
+
+  tancaModalLlista(): void {
+    this.mostraModalLlista.set(false);
+    this.indexCapPerLlista.set(null);
   }
 
   desaPartit(partit: Match): void {
@@ -166,7 +185,26 @@ export class HomePageComponent {
     this.tancaModalPartit();
   }
 
-  private comparaPartits(a: Match, b: Match): number {
+  #partitsOrdenats(cap: CapDeSetmana | null): PartitOrdenat[] {
+    if (!cap) {
+      return [];
+    }
+
+    return cap.partits
+      .map((partit, index) => ({ partit, index }))
+      .sort((a, b) => this.#comparaPartits(a.partit, b.partit));
+  }
+
+  #obteCapPerIndex(index: number | null): CapDeSetmana | null {
+    if (index === null) {
+      return null;
+    }
+
+    const caps = this.capsDeSetmana();
+    return caps[index] ?? null;
+  }
+
+  #comparaPartits(a: Match, b: Match): number {
     const diaComparacio = (a.dia ?? '').localeCompare(b.dia ?? '');
     if (diaComparacio !== 0) {
       return diaComparacio;
@@ -177,3 +215,4 @@ export class HomePageComponent {
     return horaA.localeCompare(horaB);
   }
 }
+

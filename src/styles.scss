@@ -1,4 +1,5 @@
 @use 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 html,
 body {
@@ -8,8 +9,7 @@ body {
 body {
   margin: 0;
   position: relative;
-  color: #1f1f1f;
-  
+  background-color: #000;
   overflow-x: hidden;
 }
 
@@ -17,25 +17,9 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('../public/images/fondoweb.jpg') center/cover no-repeat;
-  z-index: -2;
-  transform: scale(1.03);
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
+  background: url('/images/fondoweb.jpg') center/cover no-repeat;
+  opacity: 0.35;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.55) 35%,
-    rgba(255, 255, 255, 0.25) 55%,
-    rgba(255, 255, 255, 0.1) 70%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  backdrop-filter: blur(14px);
   z-index: -1;
 }
 
@@ -44,3 +28,4 @@ app-root {
   display: block;
   min-height: 100vh;
 }
+

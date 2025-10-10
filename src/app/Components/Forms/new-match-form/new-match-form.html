@@ -1,13 +1,15 @@
 @if (capSeleccionat) {
   <p class="modal-subtitle text-body-secondary mb-3">
-    Cap de setmana: {{ capSeleccionat!.dataInici | date: 'dd/MM/yyyy' }} -
-    {{ capSeleccionat!.dataFi | date: 'dd/MM/yyyy' }}
+    Cap de setmana: {{ capSeleccionat!.dataInici | date:'dd/MM/yyyy' }} - {{ capSeleccionat!.dataFi | date:'dd/MM/yyyy' }}
   </p>
 }
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
   <div class="col-12 col-md-6">
-    <label for="dia" class="form-label">Dia</label>
+    <label for="dia" class="form-label">
+      <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
+      Dia
+    </label>
     <input
       id="dia"
       type="date"
@@ -21,7 +23,10 @@
   </div>
 
   <div class="col-12 col-md-6">
-    <label for="hora" class="form-label">Hora</label>
+    <label for="hora" class="form-label">
+      <i class="bi bi-clock me-2" aria-hidden="true"></i>
+      Hora
+    </label>
     <input
       id="hora"
       type="time"
@@ -35,26 +40,19 @@
   </div>
 
   <div class="col-12 col-md-6">
-    <label for="local" class="form-label">Local</label>
-    <input
-      id="filtreLocal"
-      type="search"
-      class="form-control mb-2"
-      placeholder="Cerca equip..."
-      autocomplete="off"
-      [value]="filtreLocal()"
-      (input)="actualitzaFiltreLocal($event.target.value)"
-      aria-label="Cerca equip local"
-    />
+    <label for="local" class="form-label">
+      <i class="bi bi-shield-fill-check me-2" aria-hidden="true"></i>
+      Local
+    </label>
     <select
       id="local"
       class="form-select"
       formControlName="local"
-      [disabled]="!equips().length"
+      [disabled]="!equipsOrdenats().length"
       [class.is-invalid]="form.controls.local.invalid && form.controls.local.touched"
     >
       <option value="" disabled>Selecciona equip</option>
-      @for (equip of equipsLocal(); track equip.nom) {
+      @for (equip of equipsOrdenats(); track equip.nom) {
         <option [value]="equip.nom">{{ equip.nom }}</option>
       }
     </select>
@@ -64,26 +62,19 @@
   </div>
 
   <div class="col-12 col-md-6">
-    <label for="visitant" class="form-label">Visitant</label>
-    <input
-      id="filtreVisitant"
-      type="search"
-      class="form-control mb-2"
-      placeholder="Cerca equip..."
-      autocomplete="off"
-      [value]="filtreVisitant()"
-      (input)="actualitzaFiltreVisitant($event.target.value)"
-      aria-label="Cerca equip visitant"
-    />
+    <label for="visitant" class="form-label">
+      <i class="bi bi-geo-alt-fill me-2" aria-hidden="true"></i>
+      Visitant
+    </label>
     <select
       id="visitant"
       class="form-select"
       formControlName="visitant"
-      [disabled]="!equips().length"
+      [disabled]="!equipsOrdenats().length"
       [class.is-invalid]="form.controls.visitant.invalid && form.controls.visitant.touched"
     >
       <option value="" disabled>Selecciona equip</option>
-      @for (equip of equipsVisitant(); track equip.nom) {
+      @for (equip of equipsOrdenats(); track equip.nom) {
         <option [value]="equip.nom">{{ equip.nom }}</option>
       }
     </select>
@@ -93,12 +84,18 @@
   </div>
 
   <div class="col-12 col-md-6">
-    <label for="resultat" class="form-label">Resultat (opcional)</label>
+    <label for="resultat" class="form-label">
+      <i class="bi bi-trophy-fill me-2" aria-hidden="true"></i>
+      Resultat (opcional)
+    </label>
     <input id="resultat" type="text" class="form-control" formControlName="resultat" />
   </div>
 
   <div class="col-12">
-    <label for="observacions" class="form-label">Observacions</label>
+    <label for="observacions" class="form-label">
+      <i class="bi bi-journal-text me-2" aria-hidden="true"></i>
+      Observacions
+    </label>
     <textarea
       id="observacions"
       rows="3"
@@ -108,9 +105,13 @@
   </div>
 
   <div class="col-12 d-flex justify-content-end gap-2">
-    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+      <i class="bi bi-x-circle me-2" aria-hidden="true"></i>
+      Cancelar
+    </button>
     <button type="submit" class="btn btn-success">
-      {{ estaEditant ? 'Actualitzar partit' : 'Desar partit' }}
+      <i class="bi" [ngClass]="estaEditant ? 'bi-arrow-repeat' : 'bi-check-circle'" aria-hidden="true"></i>
+      <span class="ms-2">{{ estaEditant ? 'Actualitzar partit' : 'Desar partit' }}</span>
     </button>
   </div>
 </form>
